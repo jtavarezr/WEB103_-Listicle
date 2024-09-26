@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Detail</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picocss/dist/pico.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Company Detail</h1>
+        <div id="details-container"></div>
+        <a href="index.html" class="button">Back to the list</a>
+    </div>
+
+    <script>
+        // Obtener el ID de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+
+        fetch('/items')
+            .then(response => response.json())
+            .then(data => {
+                const item = data.find(i => i.id == id);
+                const detailsContainer = document.getElementById('details-container');
+
+                if (item) {
+                    detailsContainer.innerHTML = `
+                        <h2>${item.title}</h2>
+                        <img src="${item.image}" alt="${item.title}" style="width:100%; height: auto;">
+                        <p>${item.description}</p>
+                    `;
+                } else {
+                    // Redirect to the 404 page if the item is not found
+                    window.location.href = '/404.html';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Optionally redirect to 404 on fetch error
+                window.location.href = '/404.html';
+            });
+    </script>
+</body>
+
+</html>

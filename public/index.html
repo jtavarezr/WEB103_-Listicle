@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listicle App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picocss/dist/pico.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Company List</h1>
+    <div id="item-container"></div>
+
+    <script>
+        fetch('/items')
+            .then(response => response.json())
+            .then(data => {
+                const itemContainer = document.getElementById('item-container');
+                data.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <img src="${item.image}" alt="${item.title}">
+                        <div class="container">
+                            <h4><a href="details.html?id=${item.id}"><b>${item.title}</b></a></h4>
+                            <p>${item.description}</p>
+                        </div>
+                    `;
+                    itemContainer.appendChild(card);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
+</body>
+
+</html>
